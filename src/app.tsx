@@ -10,8 +10,7 @@ export function App() {
           class="link"
           href="https://preactjs.com/"
           target="_blank"
-          rel="noopener noreferrer"
-        >
+          rel="noopener noreferrer">
           Learn Preact
         </a>
       </p>
