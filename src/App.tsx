@@ -37,7 +37,18 @@ export function App() {
 
   return (
     <>
-      <Typography variant="h2" sx={{ textAlign: 'center', my: '20px' }}>
+      <Typography
+        variant="h2"
+        sx={{
+          textAlign: 'center',
+          my: '20px',
+          fontSize: {
+            lg: 60,
+            md: 40,
+            sm: 30,
+            xs: 20
+          }
+        }}>
         HiCoder web会 Issue List
       </Typography>
       {repos.map(repo => {
@@ -50,7 +61,16 @@ export function App() {
       })}
       <Link
         href="https://github.com/uta8a/web-issue-list"
-        sx={{ float: 'right', mr: '20px' }}>
+        sx={{
+          float: 'right',
+          mr: '20px',
+          fontSize: {
+            lg: 30,
+            md: 20,
+            sm: 15,
+            xs: 10
+          }
+        }}>
         GitHub Repository
       </Link>
     </>
@@ -63,13 +83,32 @@ const RepoCard = (props: Repo) => {
       variant="outlined"
       sx={{ mx: '20px', mb: '20px', backgroundColor: '#efffde' }}>
       <CardContent>
-        <Typography variant="h2" sx={{ mb: '10px' }}>
+        <Typography
+          variant="h2"
+          sx={{
+            mb: '10px',
+            fontSize: {
+              lg: 60,
+              md: 40,
+              sm: 30,
+              xs: 20
+            }
+          }}>
           ✨{' '}
           <Link href={props.link} underline="hover">
             {props.name}
           </Link>
         </Typography>
-        <Typography variant="body1">
+        <Typography
+          variant="body1"
+          sx={{
+            fontSize: {
+              lg: 30,
+              md: 20,
+              sm: 15,
+              xs: 10
+            }
+          }}>
           {props.issues.map(issue => {
             return (
               <div>
@@ -79,7 +118,17 @@ const RepoCard = (props: Repo) => {
                 </Link>
                 {issue.labels.map(label => {
                   return (
-                    <Typography component="span" sx={{ ml: '10px' }}>
+                    <Typography
+                      component="span"
+                      sx={{
+                        ml: '10px',
+                        fontSize: {
+                          lg: 30,
+                          md: 20,
+                          sm: 15,
+                          xs: 10
+                        }
+                      }}>
                       {label}
                     </Typography>
                   )
