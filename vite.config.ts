@@ -6,5 +6,6 @@ export default defineConfig({
   plugins: [preact()],
   server: {
     host: true
-  }
+  },
+  base: '/web-issue-list/'
 })
