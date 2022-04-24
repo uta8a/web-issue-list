@@ -43,10 +43,10 @@ export function App() {
           textAlign: 'center',
           my: '20px',
           fontSize: {
-            lg: 60,
-            md: 40,
-            sm: 30,
-            xs: 20
+            lg: 80,
+            md: 60,
+            sm: 40,
+            xs: 30
           }
         }}>
         HiCoder web会 Issue List
@@ -65,10 +65,10 @@ export function App() {
           float: 'right',
           mr: '20px',
           fontSize: {
-            lg: 30,
-            md: 20,
-            sm: 15,
-            xs: 10
+            lg: 45,
+            md: 30,
+            sm: 20,
+            xs: 20
           }
         }}>
         GitHub Repository
@@ -88,10 +88,10 @@ const RepoCard = (props: Repo) => {
           sx={{
             mb: '10px',
             fontSize: {
-              lg: 60,
-              md: 40,
-              sm: 30,
-              xs: 20
+              lg: 80,
+              md: 60,
+              sm: 40,
+              xs: 30
             }
           }}>
           ✨{' '}
@@ -103,10 +103,10 @@ const RepoCard = (props: Repo) => {
           variant="body1"
           sx={{
             fontSize: {
-              lg: 30,
-              md: 20,
-              sm: 15,
-              xs: 10
+              lg: 45,
+              md: 30,
+              sm: 20,
+              xs: 20
             }
           }}>
           {props.issues.map(issue => {
@@ -123,10 +123,10 @@ const RepoCard = (props: Repo) => {
                       sx={{
                         ml: '10px',
                         fontSize: {
-                          lg: 30,
-                          md: 20,
-                          sm: 15,
-                          xs: 10
+                          lg: 45,
+                          md: 30,
+                          sm: 20,
+                          xs: 20
                         }
                       }}>
                       {label}
