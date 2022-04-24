@@ -64,6 +64,7 @@ export function App() {
         sx={{
           float: 'right',
           mr: '20px',
+          mb: '20px',
           fontSize: {
             lg: 45,
             md: 30,
