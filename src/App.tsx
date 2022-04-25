@@ -13,7 +13,8 @@ export function App() {
   // HiCoder web会で取り組んでいる個人のプロジェクト一覧
   const repoData = [
     { owner: 'plageoj', name: 'fukagawa-coffee' },
-    { owner: 'keigooooo1065', name: 'personal-blog' }
+    { owner: 'keigooooo1065', name: 'personal-blog' },
+    { owner: 'kenty02', name: 'hukame' }
     // { owner: , name: }
   ]
 
