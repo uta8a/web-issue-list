@@ -7,7 +7,12 @@ import { useEffect, useState } from 'react'
 import { Card, Link, CardContent, Typography } from '@mui/material'
 
 type Issue = { title: string; url: string; labels: string[] }
-type Repo = { name: string; link: string; issues: Issue[] }
+type Repo = {
+  name: string
+  link: string
+  lastCommitAt: string
+  issues: Issue[]
+}
 
 export function App() {
   // HiCoder web会で取り組んでいる個人のプロジェクト一覧
@@ -24,10 +29,12 @@ export function App() {
     const fetchData = async () => {
       const repoList = []
       for (const repo of repoData) {
+        const lastCommitAt = await getLastCommitTime(repo.owner, repo.name)
         const issues = await getIssueFromRepo(repo.owner, repo.name)
         repoList.push({
           name: `${repo.owner} / ${repo.name}`,
           link: `https://github.com/${repo.owner}/${repo.name}`,
+          lastCommitAt,
           issues
         })
       }
@@ -52,14 +59,9 @@ export function App() {
         }}>
         HiCoder web会 Issue List
       </Typography>
-      {repos.map(repo => {
-        return (
-          <RepoCard
-            link={repo.link}
-            name={repo.name}
-            issues={repo.issues}></RepoCard>
-        )
-      })}
+      {repos.map(repo => (
+        <RepoCard {...repo} />
+      ))}
       <Link
         href="https://github.com/uta8a/web-issue-list"
         sx={{
@@ -102,6 +104,17 @@ const RepoCard = (props: Repo) => {
           </Link>
         </Typography>
         <Typography
+          sx={{
+            fontSize: {
+              lg: 45,
+              md: 30,
+              sm: 20,
+              xs: 20
+            }
+          }}>
+          🕑 {props.lastCommitAt}
+        </Typography>
+        <Typography
           variant="body1"
           sx={{
             fontSize: {
@@ -142,6 +155,25 @@ const RepoCard = (props: Repo) => {
       </CardContent>
     </Card>
   )
+}
+
+const getLastCommitTime = async (owner: string, repo: string) => {
+  const octokit = new Octokit({})
+  try {
+    const response: Endpoints['GET /repos/{owner}/{repo}/commits']['response'] =
+      await octokit.request('GET /repos/{owner}/{repo}/commits{?per_page}', {
+        owner,
+        repo,
+        per_page: 1
+      })
+
+    const [{ commit }] = response.data
+    if (commit.author !== null && commit.author.date)
+      return new Date(commit.author.date).toLocaleString()
+    else return 'Unknown author'
+  } catch (e) {
+    if (e instanceof Error) return e.message
+  }
 }
 
 const getIssueFromRepo = async (owner: string, repo: string) => {
