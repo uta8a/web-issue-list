@@ -29,9 +29,7 @@ export function App() {
     const fetchData = async () => {
       const repoList = []
       for (const repo of repoData) {
-        const lastCommitAt = (
-          await getLastCommitTime(repo.owner, repo.name)
-        ).toLocaleString()
+        const lastCommitAt = await getLastCommitTime(repo.owner, repo.name)
         const issues = await getIssueFromRepo(repo.owner, repo.name)
         repoList.push({
           name: `${repo.owner} / ${repo.name}`,
@@ -160,14 +158,22 @@ const RepoCard = (props: Repo) => {
 }
 
 const getLastCommitTime = async (owner: string, repo: string) => {
-  const octokit = new Octokit()
-  const response: Endpoints['GET /repos/{owner}/{repo}']['response'] =
-    await octokit.request('GET /repos/{owner}/{repo}', {
-      owner,
-      repo
-    })
+  const octokit = new Octokit({})
+  try {
+    const response: Endpoints['GET /repos/{owner}/{repo}/commits']['response'] =
+      await octokit.request('GET /repos/{owner}/{repo}/commits{?per_page}', {
+        owner,
+        repo,
+        per_page: 1
+      })
 
-  return new Date(response.data.pushed_at)
+    const [{ commit }] = response.data
+    if (commit.author !== null && commit.author.date)
+      return new Date(commit.author.date).toLocaleString()
+    else return 'Unknown author'
+  } catch (e) {
+    if (e instanceof Error) return e.message
+  }
 }
 
 const getIssueFromRepo = async (owner: string, repo: string) => {
