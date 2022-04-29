@@ -10,7 +10,7 @@ type Issue = { title: string; url: string; labels: string[] }
 type Repo = {
   name: string
   link: string
-  lastCommitAt: string
+  lastCommitAt: string | undefined
   issues: Issue[]
 }
 
