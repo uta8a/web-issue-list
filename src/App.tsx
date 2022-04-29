@@ -19,7 +19,9 @@ export function App() {
   const repoData = [
     { owner: 'plageoj', name: 'fukagawa-coffee' },
     { owner: 'keigooooo1065', name: 'personal-blog' },
-    { owner: 'kenty02', name: 'hukame' }
+    { owner: 'kenty02', name: 'hukame' },
+    { owner: 'ozhr', name: 'personal' },
+    { owner: 'Zuaki21', name: 'Zuaki21.github.io' }
     // { owner: , name: }
   ]
 
