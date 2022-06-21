@@ -1,10 +1,6 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { Octokit } from 'https://cdn.skypack.dev/octokit' // browser
-
+import { Card, CardContent, Link, Typography } from '@mui/material'
 import type { Endpoints } from '@octokit/types'
 import { useEffect, useState } from 'react'
-import { Card, Link, CardContent, Typography } from '@mui/material'
 
 type Issue = { title: string; url: string; labels: string[] }
 type Repo = {
@@ -12,6 +8,10 @@ type Repo = {
   link: string
   lastCommitAt: string | undefined
   issues: Issue[]
+}
+type GithubError = {
+  message: string
+  documentation_url: string
 }
 
 export function App() {
@@ -160,32 +160,29 @@ const RepoCard = (props: Repo) => {
 }
 
 const getLastCommitTime = async (owner: string, repo: string) => {
-  const octokit = new Octokit({})
-  try {
-    const response: Endpoints['GET /repos/{owner}/{repo}/commits']['response'] =
-      await octokit.request('GET /repos/{owner}/{repo}/commits{?per_page}', {
-        owner,
-        repo,
-        per_page: 1
-      })
+  const response = await fetch(
+    `https://api.github.com/repos/${owner}/${repo}/commits?per_page=1`
+  )
 
-    const [{ commit }] = response.data
+  if (response.status >= 200 && response.status < 300) {
+    const data:
+      | Endpoints['GET /repos/{owner}/{repo}/commits']['response']['data'] = await response.json()
+    const commit = data[0].commit
     if (commit.author !== null && commit.author.date)
       return new Date(commit.author.date).toLocaleString()
     else return 'Unknown author'
-  } catch (e) {
-    if (e instanceof Error) return e.message
+  } else {
+    const { message }: GithubError = await response.json()
+    return message
   }
 }
 
 const getIssueFromRepo = async (owner: string, repo: string) => {
-  const octokit = new Octokit()
-  const response: Endpoints['GET /repos/{owner}/{repo}/issues']['response'] =
-    await octokit.request('GET /repos/{owner}/{repo}/issues', {
-      owner,
-      repo
-    })
-  return response.data.map(issue => {
+  const data: Endpoints['GET /repos/{owner}/{repo}/issues']['response']['data'] =
+    await (
+      await fetch(`https://api.github.com/repos/${owner}/${repo}/issues`)
+    ).json()
+  return data.map(issue => {
     const labels: string[] = []
     for (const label of issue.labels) {
       if (typeof label !== 'string' && label.name !== undefined) {
